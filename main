@@ -1,0 +1,43 @@
+import requests
+
+def get_weather(city):
+    api_key = "YOUR_API_KEY"  # 请替换为您的天气API密钥
+    url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if "error" in data:
+            print("无法获取天气信息。")
+        else:
+            location = data["location"]["name"]
+            country = data["location"]["country"]
+            condition = data["current"]["condition"]["text"]
+            temperature = data["current"]["temp_c"]
+            humidity = data["current"]["humidity"]
+            
+            print(f"地点: {location}, {country}")
+            print(f"天气状况: {condition}")
+            print(f"温度: {temperature}°C")
+            print(f"湿度: {humidity}%")
+    else:
+        print("无法连接到天气API。")
+
+print("命令行天气查询工具")
+
+while True:
+    print("\n请选择操作：")
+    print("1. 查询天气")
+    print("2. 退出程序")
+
+    choice = input("请选择操作（输入数字）：")
+
+    if choice == '2':
+        print("谢谢使用，再见！")
+        break
+
+    if choice == '1':
+        city = input("请输入城市名称或地区代码：")
+        get_weather(city)
+    else:
+        print("无效的选择，请重新输入。")
